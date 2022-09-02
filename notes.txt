@@ -1,0 +1,14 @@
+# COMPONENTES Y SERVICIOS EN ANGULAR
+
+## COMPONENTES 
+-- Son la parte mas enscencial e importante para desarrollar tus componente en angular 
+-- No es buena parctica tener logica y vista en un mismo archivo 
+-- Los componentes deben tener responsabilidades unicas
+-- Los componentes Angular estan formados por 4 archivos
+-- file.component.html => es la vista 
+-- file.component.scss => estilos css
+-- file.component.spec.ts => es un archivo para hacer pruebas
+-- file.component.ts => el archivo que tiene toda la logica y une la vista, los estilos y la logica
+-- cada componente solo puede pertenecer a un unico modulo
+
+-- Para crear un componente con el CLI de Angular debemos ejecutar: ng g c component-name
