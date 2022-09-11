@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-img',
@@ -8,11 +8,23 @@ import { Component, OnInit, Input } from '@angular/core';
 
 export class ImgComponent implements OnInit {
 
-  @Input() img: string = 'Valor inicial'
+  @Input() img: string = ''
+  @Output() loadedOuput = new EventEmitter<string>();
+
+  imageDefault = "./assets/images/default.png";
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  imgError() {
+    this.img = this.imageDefault;
+  }
+
+  imgLoaded() {
+    console.log("Log Hijo")
+    this.loadedOuput.emit(this.img);
   }
 
 }
