@@ -142,3 +142,157 @@ La función recibirMensaje() posee un parámetro del tipo Event que contendrá e
 
 =========================================================================================================
 
+## COMPONENTE DE PRODUCTO
+
+Existen muchas situaciones en donde deberás enviar información de un componente padre a su/s hijo/s, por eso, acá te mostraremos con un ejemplo cómo funciona el componente para producto.
+
+Comunicando componente padre a hijo
+Un ejemplo real para el uso de la comunicación entre componente podría ser para renderizar N cantidad de productos de un catálogo.
+
+Paso 1: Comienza creando una interfaz para tipear el modelo de datos del Producto:
+
+// interfaces/producto.interface.ts
+export interface Producto {
+    id: number;
+    name: string;
+    precio: number;
+    image: string;
+}
+
+Paso 2: Luego, impórtala en el componente Catálogo que será el componente padre en la comunicación.
+
+// components/catalogo/catalogo.component.ts
+import { Component } from '@angular/core';
+import { Producto } from './producto.interface.ts';
+
+@Component({
+  selector: 'app-catalogo',
+  templateUrl: './catalogo.component.html',
+  styleUrls: ['./catalogo.component.scss']
+})
+export class CatalogoComponent {
+
+  public productos: Producto[] = [
+    {
+        id: 1,
+        name: 'Automobil de juguete',
+        precio: 100,
+        image: './image1.jpg'
+    },
+    {
+        id: 2,
+        name: 'Muñeca de trapo',
+        precio: 180,
+        image: './image2.jpg'
+    },
+    {
+        id: 3,
+        name: 'Pelota de futbol',
+        precio: 120,
+        image: './image3.jpg'
+    }
+  ];
+}
+
+Paso 3: Este componente posee un array de productos para iterar en el HTML inicializando el componente <app-producto> por cada objeto en el array.
+
+<!-- components/catalogo/catalogo.component.html -->
+<app-producto *ngFor="let p of productos"
+    [producto]="p"
+></app-producto>
+
+Paso 4: Finalmente, el componente hijo recibe el producto haciendo uso del decorador @Input() y apoyándose también de la interfaz para tipear los datos.
+
+// components/producto/producto.component.ts
+import { Component, Input } from '@angular/core';
+import { Producto } from './producto.interface.ts';
+
+@Component({
+  selector: 'app-producto',
+  templateUrl: './producto.component.html',
+  styleUrls: ['./producto.component.scss']
+})
+export class ProductoComponent {
+
+  @Input() producto: Producto;
+}
+
+Pudiendo mostrar la información del producto en el template del componente hijo:
+
+<!-- components/producto/producto.component.html -->
+<div>
+    <h2>{{ producto.name }}</h2>
+    <img [src]="producto.image">
+    <p>Precio: {{ producto.precio }}</p>
+</div>
+
+Será habitual tener la necesidad en tus proyectos de construir componentes más grandes o “contenedores” de muchos otros componentes repetitivos y más pequeños. Es importante buscar este desacople entre componentes de la mejor manera posible.
+
+=========================================================================================================
+
+## CICLO DE VIDA
+
+-- Lo primero que se ejecuta es el constructor
+-- el constructor se ejecuta antes del render
+-- no se deben ejecutar tareas asincronas en ele constructor
+-- el contructor se ejecuta una vez
+
+Un componente pasa por varias etapas en su ciclo de vida. A través de hooks, puedes realizar una determinada acción cuando el componente es inicializado, cuando se dispara un evento, cuando se detecta un cambio, cuando el componente es destruido, etc.
+
+A continuación, se detalla la secuencia de eventos y el orden de los mismos:
+
+Hooks más utilizados
+Constructor
+Como en toda clase en la programación orientada a objetos, el constructor es quien crea la instancia del objeto y sus dependencias.
+
+Solo se ejecuta una vez antes del render del componente.
+No tiene que utilizarse para procesos asincrónicos.
+ngOnChanges
+El hook ngOnChanges() se dispara cada vez que se produce un cambio de estado en el componente. Cuando una variable cambia de valor, por ejemplo o ante el cambio de valor de un Input.
+
+Se ejecuta N cantidad de veces antes y durante el render del componente.
+Puede emplearse para procesos asincrónicos.
+ngOnInit
+Es el hook más usado, ngOnInit() es ideal para cualquier solicitud de datos asincrónicos a una API para preparar el componente antes de renderizarlo.
+
+Únicamente se ejecuta una vez, antes del render del componente.
+Puede usarse para procesos asincrónicos.
+ngAfterViewInit
+Este hook únicamente se ejecuta una vez cuando el render del componente haya finalizado. Puede serte útil para realizar acciones programáticas que requieran que todo el HTML del componente ya este preparado.
+
+Únicamente se ejecuta una vez después del render del componente.
+ngOnDestroy
+Finalmente, ngOnDestroy() se ejecutará cuando el componente es destruido, o sea, cuando ya no existe en la interfaz del navegador. Suele utilizarse para liberar espacios de memoria que el componente requiera.
+
+Usando hook
+Los hooks de ciclo de vida de Angular, son interfaces que tienen que importarse desde @angular/core para implementarlos en la clase y así detectar los cambios en cada evento.
+
+import { Component, OnInit, AfterContentInit, OnDestroy } from '@angular/core';
+
+@Component({
+  selector: 'app-test-name',
+  templateUrl: './test-name.component.html',
+  styleUrls: ['./test-name.component.less']
+})
+export class TestNameComponent implements OnInit, AfterContentInit, OnDestroy {
+
+  constructor() {
+    console.log('1. Primero sucederá esto');
+  }
+
+  ngOnInit(): void {
+    console.log('2. Luego esto');
+  }
+
+  ngAfterViewInit(): void {
+    console.log('3. Seguido de esto');
+  }
+
+  ngOnDestroy(): void {
+    console.log('4. Finalmente esto (cuando el componente sea destruido)');
+  }
+
+}
+
+Cada hook tiene sus características y utilidades recomendadas dependiendo lo que necesitas ayer. Es importante seguir estas recomendaciones para buscar optimizar el rendimiento de tu aplicación.
+
