@@ -44,10 +44,10 @@ export class ImgComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
     // Run just once
     console.log("ngOnInit", "🚀ImgValue=>",this.img);
 
-    this.counterFn = window.setInterval(() => {
-      this.counter += 1;
-      console.log("run counter", this.counter);
-    }, 1000)
+    // this.counterFn = window.setInterval(() => {
+    //   this.counter += 1;
+    //   console.log("run counter", this.counter);
+    // }, 1000)
   }
 
   ngAfterViewInit(): void {
