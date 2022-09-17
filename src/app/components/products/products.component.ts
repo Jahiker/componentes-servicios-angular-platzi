@@ -14,6 +14,10 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  myShoppingCart: Product[] = [];
+
+  total: number = 0;
+
   products: Product[] = [
     {
       id: '1',
@@ -52,5 +56,11 @@ export class ProductsComponent implements OnInit {
       price: 100
     }
   ]
+
+  onAddToShoppingCart(product: Product) {
+    this.myShoppingCart.push(product);
+    console.log("myShoppingCart:", this.myShoppingCart)
+    this.total =  this.myShoppingCart.reduce((sum, item) => sum + item.price, 0)
+  }
 
 }

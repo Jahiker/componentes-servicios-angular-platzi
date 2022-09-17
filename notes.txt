@@ -523,3 +523,205 @@ width=""}
 
 Siempre tienes que desarrollar tus aplicaciones front-end de manera tal que se vea correctamente en cualquier dispositivo. Apóyate de las herramientas que los navegadores poseen para validar tu aplicación.
 
+=========================================================================================================
+
+A la hora de implementar el sideMenu recuerda siempre la importancia de que una aplicación web sea responsive para que pueda adaptarse a cualquier dispositivo, ya sea un celular, una tablet o un ordenador.
+
+Menú mobile
+Utilizando el estado de los componentes de Angular, podrás mostrar un menú lateral solo en dispositivos pequeños.
+
+Paso 1: Comienza dividiendo tu <header> adaptándolo con CSS para mostrar u ocultar elementos dependiendo el tamaño del dispositivo:
+
+<!-- components/nav-bar/nav-bar.component.html -->
+<header class="header">
+    <div class="d-flex-mobile">
+        <a href="#" class="logo">CompanyLogo</a>
+        <div class="show-side-menu">
+            <app-side-bar></app-side-bar>
+        </div>
+    </div>
+    <div class="header-right hidde-menu">
+        <a href="#">Home</a>
+        <a class="active" href="#">Catalogo</a>
+        <a href="#">About</a>
+    </div>
+</header>
+
+/* components/nav-bar/nav-bar.component.scss */
+.header {
+  /* ... */
+  .show-side-menu {
+    display: none;
+  }
+}
+
+/* Header Mobile */
+@media screen and (max-width: 512px) {
+  /* ... */
+  .d-flex-mobile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .show-side-menu {
+    display: block;
+  }
+  .hidde-menu {
+    display: none;
+  }
+}
+
+// components/side-bar/side-bar.component.ts
+@Component({
+  selector: 'app-side-bar',
+  templateUrl: './side-bar.component.html',
+  styleUrls: ['./side-bar.component.scss']
+})
+export class SideBarComponent {
+
+  public showMenu = false;
+
+  toggleSideBar(): void {
+    this.showMenu = !this.showMenu;
+  }
+
+}
+
+<!-- components/side-bar/side-bar.component.html -->
+<div id="main">
+    <button class="openbtn" (click)="toggleSideBar()">☰</button>
+</div>
+<div id="mySidebar" class="sidebar" [ngClass]="this.showMenu ? 'showMenu' : ''">
+    <a href="javascript:void(0)" class="closebtn" (click)="toggleSideBar()">×</a>
+    <a href="#">Home</a>
+    <a class="active" href="#">Catalogo</a>
+    <a href="#">About</a>
+</div>
+
+/* components/side-bar/side-bar.component.scss */
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #f1f1f1;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  box-shadow: 0 3px 6px #00000029;
+
+  a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 22px;
+    color: black;
+    display: block;
+    transition: 0.3s;
+  }
+  .active, a:hover {
+    color: #98ca3f;
+  }
+  .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+}
+.openbtn {
+  cursor: pointer;
+  font-size: 20px;
+  color: black;
+  background-color: #f1f1f1;
+  padding: 10px 15px 15px 15px;
+  border: none;
+}
+#main {
+  transition: margin-left .5s;
+  padding: 12px;
+}
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 18px;}
+}
+.showMenu {
+  width: 250px;
+}
+
+Paso 3: Fíjate en la función toggleSideBar() que activará o desactivará el menú lateral al hacer clic en el botón.
+
+Es importante considerar la navegación del usuario, tanto en pantallas grandes como en pequeñas, que el menú sea de rápido acceso y accesible.
+
+=========================================================================================================
+
+Un servicio es la forma que utiliza Angular para modular una aplicación y crear código reutilizable, este tendrá una determinada lógica de negocio que puede ser usada por varios componentes u otros servicios.
+
+Tu primer servicio
+Con el CLI de Angular, crea un servicio fácilmente con el comando ng generate service test-name o en su manera corta ng g s test-name. Dicho comando creará dos archivos:
+
+test-name.service.ts
+test-name.service.spec.ts
+Siendo el archivo .ts el servicio en sí y el archivo .spec.ts el que podrás usar para escribir pruebas unitarias para testear el servicio.
+
+El servicio tendrá por defecto el siguiente código:
+
+import { Injectable } from '@angular/core';
+@Injectable({
+  providedIn: 'root'
+})
+export class TestNameService {
+  constructor() { }
+}
+
+Haz visto anteriormente los decoradores en Angular. Así como los componentes usan el decorador @Component(), los servicios utilizan @Injectable().
+
+Utilizando un servicio
+Paso 1: Agrégale al servicio algo de lógica, por ejemplo, una variable con un determinado valor para ser leído a través de un método:
+
+import { Injectable } from '@angular/core';
+@Injectable({
+  providedIn: 'root'
+})
+export class TestNameService {
+  private testName = 'Hola Platzi';
+
+  constructor() { }
+
+  getTestName(): string {
+    return this.testName;
+  }
+}
+
+Paso 2: Luego, importa en un componente el servicio de la siguiente manera:
+
+// components/catalogo/catalogo.component.ts
+import { TestNameService } from 'src/app/services/test-name.service';
+
+@Component({
+  selector: 'app-catalogo',
+  templateUrl: './catalogo.component.html',
+  styleUrls: ['./catalogo.component.scss']
+})
+export class CatalogoComponent implements OnInit {
+
+  // ...
+
+  constructor(
+    private testNameService: TestNameService,
+  ) { }
+
+  ngOnInit(): void {
+    const name = this.testNameService.getTestName();
+    console.log(name);
+  }
+}
+
+En el constructor del componente, se inyecta el servicio para poder ser utilizado posteriormente.
+
+En este ejemplo, estamos llamando en el ngOnInit() el método getTestName() del servicio para obtener el valor de una variable e imprimirla por consola.
+
+De esta manera, puedes tener tu lógica de negocio en un servicio e importar este en N componentes, o incluso en otros servicios y acceder a sus métodos y propiedades.
+
