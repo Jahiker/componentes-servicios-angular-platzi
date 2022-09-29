@@ -1,5 +1,8 @@
 <p> {{ myShoppingCart.length }} productos en el carrito </p>
 <p>Total: ${{ total }}</p>
+<p>Today: {{ today | date }}</p>
+<p>Otra fecha: {{ date | date:'dd/MM/yyyy' }}</p>
+<p>{{ 'hOLa MUndO' | uppercase }}</p>
 <div class="products--grid">
   <app-product
     *ngFor="let product of products"
