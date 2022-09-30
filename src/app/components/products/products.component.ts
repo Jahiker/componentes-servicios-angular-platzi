@@ -19,7 +19,7 @@ export class ProductsComponent implements OnInit {
 
   today = new Date();
 
-  date = new Date(2021,1,3)
+  date = new Date(2021,1,3);
 
   constructor(
     private storeService: StoreService,
