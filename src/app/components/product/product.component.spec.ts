@@ -1,3 +1,4 @@
+import { isNgTemplate } from '@angular/compiler';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductComponent } from './product.component';

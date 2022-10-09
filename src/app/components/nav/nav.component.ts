@@ -7,22 +7,21 @@ import { StoreService } from 'src/app/services/store.service';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })
-export class NavComponent implements OnInit, OnChanges {
+export class NavComponent implements OnInit {
   total: number = 0;
+  activeMenu = false;
+  counter = 0;
+
   constructor(
     private storeService: StoreService
-  ) {
-    this.total = this.storeService.getTotal();
-  }
+  ) { }
 
   ngOnInit(): void {
+    this.storeService.myCart$.subscribe(products => {
+      this.counter = products.length;
+    })
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.total = this.storeService.getTotal();
-  }
-
-  activeMenu = false;
 
   toggleMenu() {
     this.activeMenu = !this.activeMenu;

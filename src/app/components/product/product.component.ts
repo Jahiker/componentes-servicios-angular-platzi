@@ -6,11 +6,8 @@ import { Product } from 'src/app/models/product.model';
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements {
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
   @Input() product: Product = {
     id: '',

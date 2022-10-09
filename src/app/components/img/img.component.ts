@@ -10,6 +10,7 @@ export class ImgComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
 
   img: string = '';
 
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('img')
   set changeImg(newImg: string) {
     this.img = newImg;
@@ -27,39 +28,39 @@ export class ImgComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
     // Run before render
     // Run just once
     // No Async process
-    // console.log("constructor", "🚀ImgValue=>",this.img)
+    console.log("constructor", "🚀ImgValue=>",this.img)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     // Run before and during render
     // Inputs changes
     // Run any times as is neccesary
-    // console.log("ngOnChanges", "🚀ImgValue=>",this.img)
-    // console.log("changes", changes);
+    console.log("ngOnChanges", "🚀ImgValue=>",this.img)
+    console.log("changes", changes);
   }
 
   ngOnInit(): void {
     // Run before render
     // Async proccess
     // Run just once
-    // console.log("ngOnInit", "🚀ImgValue=>",this.img);
+    console.log("ngOnInit", "🚀ImgValue=>",this.img);
 
-    // this.counterFn = window.setInterval(() => {
-    //   this.counter += 1;
-    //   console.log("run counter", this.counter);
-    // }, 1000)
+    this.counterFn = window.setInterval(() => {
+      this.counter += 1;
+      console.log("run counter", this.counter);
+    }, 1000)
   }
 
   ngAfterViewInit(): void {
     // Run after render
     // Handle childrens
-    // console.log("ngAfterViewInit", "🚀ImgValue=>",this.img)
+    console.log("ngAfterViewInit", "🚀ImgValue=>",this.img)
   }
 
   ngOnDestroy(): void {
     // Run on delete component
-    // console.log("ngOnDestroy", "🚀ImgValue=>",this.img)
-    // window.clearInterval(this.counterFn);
+    console.log("ngOnDestroy", "🚀ImgValue=>",this.img)
+    window.clearInterval(this.counterFn);
   }
 
   imgError() {
@@ -67,7 +68,7 @@ export class ImgComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
   }
 
   imgLoaded() {
-    // console.log("Log Hijo")
+    console.log("Log Hijo")
     this.loadedOuput.emit(this.img);
   }
 
